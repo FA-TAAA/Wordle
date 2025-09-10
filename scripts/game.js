@@ -8,22 +8,8 @@ const wordleGridRows = Array.from(wordleGridBox.children);
 let currentRowInUse = wordleGridRows[rowInUseIndex];
 
 keyboardKeys.forEach((key) => {
-  key.addEventListener("click", () => {
-    if (wordInput.length < 5) {
-      wordInput += key.textContent;
-      rowLetterIndex++;
-      addLetterToRow(
-        Array.from(currentRowInUse.children),
-        key.textContent,
-        rowLetterIndex,
-      );
-    } else {
-      console.log("Word is too long");
-    }
-  });
+  key.addEventListener("click", setupKeyboard);
 });
-
-//-------
 
 submitButton.addEventListener("click", () => {
   if (wordInput.length != 5) {
@@ -32,6 +18,15 @@ submitButton.addEventListener("click", () => {
   }
   wordInsertionAnimation(Array.from(currentRowInUse.children), wordInput);
 
+  if (wordInput == wordToGuess) {
+    disableKeyboard(keyboardKeys);
+    return;
+  }
+
+  if (rowInUseIndex == numberOfRows - 1) {
+    disableKeyboard(keyboardKeys);
+    return;
+  }
   rowInUseIndex++;
   rowLetterIndex = -1;
   wordInput = "";
@@ -45,3 +40,24 @@ deleteButton.addEventListener("click", () => {
     rowLetterIndex--;
   }
 });
+
+function setupKeyboard(key) {
+  if (wordInput.length < 5) {
+    wordInput += key.target.textContent;
+    rowLetterIndex++;
+    addLetterToRow(
+      Array.from(currentRowInUse.children),
+      key.target.textContent,
+      rowLetterIndex,
+    );
+  } else {
+    errorRowAnimation(currentRowInUse);
+    console.log("Word is too long");
+  }
+}
+
+function disableKeyboard(keys) {
+  keys.forEach((key) => {
+    key.removeEventListener("click", setupKeyboard);
+  });
+}

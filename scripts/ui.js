@@ -5,8 +5,6 @@ function addLetterToRow(row, letter, index) {
 }
 
 function removeLetterFromRow(row, index) {
-  console.log(index);
-  console.log(row[index]);
   row[index].textContent = "";
 }
 
