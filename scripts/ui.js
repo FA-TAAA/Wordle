@@ -16,18 +16,32 @@ function errorRowAnimation(row) {
     { once: true });
 }
 
-function wordInsertionAnimation(row, wordInput) {
+function wordInsertionAnimation(row, input) {
   row.forEach((item, index) =>
     setTimeout(() => {
-      if (!wordToGuess.includes(wordInput.charAt(index))) {
+      let wordInputChar = input.charAt(index);
+      if (!wordToGuess.includes(wordInputChar)) {
         item.classList.add("unavailable");
+        removeUnavailabeKeyboardLetters(keyboard, wordInputChar);
         return;
       }
-      if (wordInput.charAt(index) == wordToGuess.charAt(index)) {
+      if (wordToGuess.charAt(index) == wordInputChar) {
         item.classList.add("correct-place");
       } else {
         item.classList.add("wrong-place");
       }
     }, index * 500),
   );
+}
+
+function removeUnavailabeKeyboardLetters(keyboardArray, char) {
+  const keyboard = Array.from(keyboardArray.children);
+  keyboard.forEach((key) => {
+    if (key.localName == "div") {
+      if (key.textContent == char) {
+        disableKeyStroke(key);
+        key.classList.add("removed-key");
+      }
+    }
+  });
 }

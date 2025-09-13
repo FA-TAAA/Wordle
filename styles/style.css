@@ -143,3 +143,9 @@ body {
 .submit-animation {
     animation: submitRowAnimation 1s linear;
 }
+
+.removed-key {
+    border: 1px solid grey;
+    opacity: 0.5;
+    cursor: not-allowed;
+}

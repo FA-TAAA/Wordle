@@ -1,7 +1,7 @@
 "use strict";
 
 let numberOfRows = 6;
-let wordToGuess = "BERRY";
+let wordToGuess = "SHOES";
 
 const wordleGridBox = document.querySelector(".wordle-grid-box");
 const keyboard = document.querySelector(".keyboard");
