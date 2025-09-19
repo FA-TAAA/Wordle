@@ -31,17 +31,19 @@ submitButton.addEventListener("click", () => {
     errorRowAnimation(currentRowInUse);
     return;
   }
-  wordInsertionAnimation(Array.from(currentRowInUse.children), wordInput);
-
-  if (wordInput == wordToGuess) {
-    disableKeyStroke(keyboardKeys);
-    return;
-  }
 
   if (rowInUseIndex == numberOfRows - 1) {
-    disableKeyStroke(keyboardKeys);
+    disableKeyboard(keyboardKeys);
     return;
   }
+
+  wordInsertionAnimation(Array.from(currentRowInUse.children), wordInput);
+
+  if (wordInput === wordToGuess) {
+    disableKeyboard(keyboardKeys);
+    return;
+  }
+
   rowInUseIndex++;
   rowLetterIndex = -1;
   wordInput = "";

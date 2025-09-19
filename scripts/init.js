@@ -1,7 +1,24 @@
 "use strict";
 
+let wordToGuess;
 let numberOfRows = 6;
-let wordToGuess = "SHOES";
+
+fetch("/utils/words.json")
+  .then((response) => {
+    if (!response.ok) {
+      console.log("ERROR ! Request wasn't completed !");
+      return;
+    }
+    return response.json();
+  })
+  .then((data) => {
+    const wordsArray = data;
+    wordToGuess = getRandomWord(wordsArray);
+    console.log(wordToGuess);
+  })
+  .catch((error) => {
+    console.error("There was an issue ", error);
+  });
 
 const wordleGridBox = document.querySelector(".wordle-grid-box");
 const keyboard = document.querySelector(".keyboard");
@@ -35,4 +52,8 @@ function setupKeyboardButtons(keyboard) {
     buttonLetters.push(newKey);
   });
   return buttonLetters;
+}
+
+function getRandomWord(listOfWords) {
+  return listOfWords[Math.floor(Math.random() * listOfWords.length)];
 }
