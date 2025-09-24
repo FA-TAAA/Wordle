@@ -45,3 +45,7 @@ function removeUnavailabeKeyboardLetters(keyboardArray, char) {
     }
   });
 }
+
+function hideElement(element, hide) {
+  element.classList.toggle("hidden", hide);
+}

@@ -7,36 +7,65 @@
         <title>Wordle</title>
     </head>
     <body>
-        <div class="wordle-grid-box"></div>
-        <div class="keyboard">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="icon delete"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M12 9.75 14.25 12m0 0 2.25 2.25M14.25 12l2.25-2.25M14.25 12 12 14.25m-2.58 4.92-6.374-6.375a1.125 1.125 0 0 1 0-1.59L9.42 4.83c.21-.211.497-.33.795-.33H19.5a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9.284c-.298 0-.585-.119-.795-.33Z"
-                />
-            </svg>
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="icon submit"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-                />
-            </svg>
+        <div class="game-box">
+            <div class="game-settings">
+                <div class="setting">
+                    <label for="category">Category&#8595;</label>
+                    <select name="category" id="category">
+                        <option value="wordle">Wordle</option>
+                        <option value="softwares">Sofwares</option>
+                        <option value="programming_languages">
+                            Programming Languages
+                        </option>
+                        <option value="countries">Countries</option>
+                        <option value="capitals_of_countries">Capitals</option>
+                        <option value="sports">Sports</option>
+                        <option value="birds">Birds</option>
+                        <option value="companies">Companies</option>
+                        <option value="sports">Sports</option>
+                    </select>
+                </div>
+                <button class="start-button">Start</button>
+                <div class="setting">
+                    <label for="wordle-length">Wordle's Length</label>
+                    <input
+                        id="wordle-length"
+                        name="wordle-length"
+                        type="number"
+                    />
+                </div>
+            </div>
+            <div class="wordle-grid-box"></div>
+            <div class="keyboard">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="icon delete"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 9.75 14.25 12m0 0 2.25 2.25M14.25 12l2.25-2.25M14.25 12 12 14.25m-2.58 4.92-6.374-6.375a1.125 1.125 0 0 1 0-1.59L9.42 4.83c.21-.211.497-.33.795-.33H19.5a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9.284c-.298 0-.585-.119-.795-.33Z"
+                    />
+                </svg>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="icon submit"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                    />
+                </svg>
+            </div>
         </div>
         <script src="scripts/init.js"></script>
         <script src="scripts/ui.js"></script>

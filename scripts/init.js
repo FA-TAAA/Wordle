@@ -1,40 +1,40 @@
 "use strict";
 
-let wordToGuess;
-let numberOfRows = 6;
-
-fetch("/utils/words.json")
-  .then((response) => {
-    if (!response.ok) {
-      console.log("ERROR ! Request wasn't completed !");
-      return;
-    }
-    return response.json();
-  })
-  .then((data) => {
-    const wordsArray = data;
-    wordToGuess = getRandomWord(wordsArray);
-    console.log(wordToGuess);
-  })
-  .catch((error) => {
-    console.error("There was an issue ", error);
-  });
-
+const startButton = document.querySelector(".start-button");
 const wordleGridBox = document.querySelector(".wordle-grid-box");
 const keyboard = document.querySelector(".keyboard");
 const deleteButton = document.querySelector(".delete");
 const submitButton = document.querySelector(".submit");
-
+const gameSettings = document.querySelector(".game-settings");
 const keyboardKeys = setupKeyboardButtons(keyboard);
-generateRows(wordleGridBox, numberOfRows);
 
-function generateRows(wordleGridBox, numberOfRows) {
-  for (let i = 0; i < numberOfRows; i++) {
+let category;
+let wordToGuess;
+let wordleLength;
+
+let wordleGridRows;
+let currentRowInUse;
+
+startButton.addEventListener("click", setGameSettings);
+
+async function setGameSettings() {
+  category = document.querySelector("#category").value;
+  wordleLength = parseInt(document.querySelector("#wordle-length").value);
+  await assignRandomWord(category, wordleLength);
+  generateRows(wordleGridBox, wordleLength);
+  hideElement(gameSettings, true);
+  wordleGridRows = Array.from(wordleGridBox.children);
+  currentRowInUse = wordleGridRows[rowInUseIndex];
+}
+
+function generateRows(wordleGridBox, numberOfColumns) {
+  for (let i = 0; i < 5; i++) {
     const newRow = document.createElement("div");
     newRow.classList.add("wordle-row");
-    for (let j = 0; j < 5; j++) {
+    for (let j = 0; j < numberOfColumns; j++) {
       const child = document.createElement("div");
       child.classList.add("wordle-row-item");
+      newRow.style.gridTemplateColumns = `repeat(${numberOfColumns} , 1fr)`;
       newRow.appendChild(child);
     }
     wordleGridBox.appendChild(newRow);
@@ -54,6 +54,23 @@ function setupKeyboardButtons(keyboard) {
   return buttonLetters;
 }
 
-function getRandomWord(listOfWords) {
-  return listOfWords[Math.floor(Math.random() * listOfWords.length)];
+async function generateRandomWord(url) {
+  try {
+    const response = await fetch(url);
+    console.log(response);
+    if (!response.ok) {
+      throw new Error("Network Response Was Not OK !");
+    }
+    const data = await response.json();
+    console.log(data[0].word);
+    return data[0].word;
+  } catch (error) {
+    console.error("There was an error in the fetch opearation : " + error);
+  }
+}
+
+async function assignRandomWord(category, length) {
+  wordToGuess = await generateRandomWord(
+    `https://random-words-api.kushcreates.com/api?category=${category}&length=${length}&type=uppercase&language=en&words=1`,
+  );
 }

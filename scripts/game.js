@@ -4,9 +4,6 @@ let wordInput = "";
 let rowInUseIndex = 0;
 let rowLetterIndex = -1;
 
-const wordleGridRows = Array.from(wordleGridBox.children);
-let currentRowInUse = wordleGridRows[rowInUseIndex];
-
 function setupKeyStroke(key) {
   if (wordInput.length < 5) {
     wordInput += key.target.textContent;
@@ -32,7 +29,7 @@ submitButton.addEventListener("click", () => {
     return;
   }
 
-  if (rowInUseIndex == numberOfRows - 1) {
+  if (rowInUseIndex == wordleLength - 1) {
     disableKeyboard(keyboardKeys);
     return;
   }
