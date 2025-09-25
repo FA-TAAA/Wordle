@@ -8,9 +8,13 @@ const submitButton = document.querySelector(".submit");
 const gameSettings = document.querySelector(".game-settings");
 const keyboardKeys = setupKeyboardButtons(keyboard);
 
+let wordInput = "";
+let rowInUseIndex = 0;
+let rowLetterIndex = -1;
+
 let category;
-let wordToGuess;
 let wordleLength;
+let wordToGuess;
 
 let wordleGridRows;
 let currentRowInUse;
@@ -25,9 +29,13 @@ async function setGameSettings() {
   hideElement(gameSettings, true);
   wordleGridRows = Array.from(wordleGridBox.children);
   currentRowInUse = wordleGridRows[rowInUseIndex];
+  keyboardKeys.forEach((key) => {
+    key.addEventListener("click", setupKeyStroke);
+  });
 }
 
 function generateRows(wordleGridBox, numberOfColumns) {
+  wordleGridBox.innerHTML = "";
   for (let i = 0; i < 5; i++) {
     const newRow = document.createElement("div");
     newRow.classList.add("wordle-row");
@@ -57,7 +65,6 @@ function setupKeyboardButtons(keyboard) {
 async function generateRandomWord(url) {
   try {
     const response = await fetch(url);
-    console.log(response);
     if (!response.ok) {
       throw new Error("Network Response Was Not OK !");
     }

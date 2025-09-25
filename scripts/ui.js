@@ -30,7 +30,7 @@ function wordInsertionAnimation(row, input) {
       } else {
         item.classList.add("wrong-place");
       }
-    }, index * 500),
+    }, index * 300),
   );
 }
 
@@ -42,6 +42,16 @@ function removeUnavailabeKeyboardLetters(keyboardArray, char) {
         disableKeyStroke(key);
         key.classList.add("removed-key");
       }
+    }
+  });
+}
+
+function resetKeyboardUI(keyboardArray) {
+  const keyboard = Array.from(keyboardArray.children);
+  keyboard.forEach((key) => {
+    if (key.localName == "div") {
+      disableKeyStroke(key);
+      key.classList.remove("removed-key");
     }
   });
 }

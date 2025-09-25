@@ -1,9 +1,5 @@
 "use strict";
 
-let wordInput = "";
-let rowInUseIndex = 0;
-let rowLetterIndex = -1;
-
 function setupKeyStroke(key) {
   if (wordInput.length < 5) {
     wordInput += key.target.textContent;
@@ -18,10 +14,6 @@ function setupKeyStroke(key) {
     console.log("Word is too long");
   }
 }
-
-keyboardKeys.forEach((key) => {
-  key.addEventListener("click", setupKeyStroke);
-});
 
 submitButton.addEventListener("click", () => {
   if (wordInput.length != 5) {
@@ -38,6 +30,13 @@ submitButton.addEventListener("click", () => {
 
   if (wordInput === wordToGuess) {
     disableKeyboard(keyboardKeys);
+    setTimeout(() => {
+      hideElement(gameSettings, false);
+      resetKeyboardUI(keyboard);
+      wordInput = "";
+      rowInUseIndex = 0;
+      rowLetterIndex = -1;
+    }, 3000);
     return;
   }
 
