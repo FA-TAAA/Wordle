@@ -56,6 +56,9 @@ function setupKeyboardButtons(keyboard) {
     const newKey = document.createElement("div");
     newKey.textContent = letter;
     newKey.classList.add("key");
+    if (letter === "Z") {
+      newKey.classList.add("Z-key");
+    }
     keyboard.appendChild(newKey);
     buttonLetters.push(newKey);
   });

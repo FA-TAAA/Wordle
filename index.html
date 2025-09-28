@@ -4,38 +4,43 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="styles/style.css" />
+        <link
+            rel="icon"
+            href="https://cdn4.iconfinder.com/data/icons/tabler-vol-4/24/letter-w-512.png"
+            type="image/x-icon"
+        />
         <title>Wordle</title>
     </head>
     <body>
-        <div class="game-box">
-            <div class="game-settings">
-                <div class="setting">
-                    <label for="category">Category&#8595;</label>
-                    <select name="category" id="category">
-                        <option value="wordle">Wordle</option>
-                        <option value="softwares">Sofwares</option>
-                        <option value="programming_languages">
-                            Programming Languages
-                        </option>
-                        <option value="countries">Countries</option>
-                        <option value="capitals_of_countries">Capitals</option>
-                        <option value="sports">Sports</option>
-                        <option value="birds">Birds</option>
-                        <option value="companies">Companies</option>
-                        <option value="sports">Sports</option>
-                    </select>
-                </div>
-                <button class="start-button">Start</button>
-                <div class="setting">
-                    <label for="wordle-length">Wordle's Length</label>
-                    <input
-                        id="wordle-length"
-                        name="wordle-length"
-                        type="number"
-                        value="5"
-                    />
-                </div>
+        <dialog class="game-settings" open>
+            <div class="setting">
+                <label for="category">Category&#8595;</label>
+                <select name="category" id="category">
+                    <option value="wordle">Wordle</option>
+                    <option value="softwares">Sofwares</option>
+                    <option value="programming_languages">
+                        Programming Languages
+                    </option>
+                    <option value="countries">Countries</option>
+                    <option value="capitals_of_countries">Capitals</option>
+                    <option value="sports">Sports</option>
+                    <option value="birds">Birds</option>
+                    <option value="companies">Companies</option>
+                    <option value="sports">Sports</option>
+                </select>
             </div>
+            <div class="setting">
+                <label for="wordle-length">Wordle's Length&#8595;</label>
+                <input
+                    id="wordle-length"
+                    name="wordle-length"
+                    type="number"
+                    value="5"
+                />
+            </div>
+            <button class="start-button">Start</button>
+        </dialog>
+        <div class="game-box">
             <div class="wordle-grid-box"></div>
             <div class="keyboard">
                 <svg

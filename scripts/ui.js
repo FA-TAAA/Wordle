@@ -50,7 +50,6 @@ function resetKeyboardUI(keyboardArray) {
   const keyboard = Array.from(keyboardArray.children);
   keyboard.forEach((key) => {
     if (key.localName == "div") {
-      disableKeyStroke(key);
       key.classList.remove("removed-key");
     }
   });

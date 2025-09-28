@@ -21,7 +21,7 @@ submitButton.addEventListener("click", () => {
     return;
   }
 
-  if (rowInUseIndex == wordleLength - 1) {
+  if (rowInUseIndex > 4) {
     disableKeyboard(keyboardKeys);
     return;
   }
