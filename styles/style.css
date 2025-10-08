@@ -123,6 +123,10 @@ body {
     width: 50%;
 }
 
+.dialog__indicator {
+    font-size: 1rem;
+}
+
 .empty {
     animation-name: empty__row__zoom;
     animation-duration: 2s;
