@@ -59,9 +59,6 @@ function winningAnimation(row) {
   });
 }
 
-function messageIndicator(type = "game", message) {
+function messageIndicator(message) {
   dialogIndicator.textContent = message;
-  setTimeout(() => {
-    dialogIndicator.textContent = " ";
-  }, 5000);
 }

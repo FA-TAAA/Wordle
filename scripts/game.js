@@ -50,6 +50,7 @@ function submitGuess() {
     setTimeout(() => {
       wordleSettings.showModal();
       messageIndicator("dialog", `The Worlde was "${wordle}"`);
+      console.log("hello");
     }, wordleLength * 600);
     return;
   }
