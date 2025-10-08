@@ -49,6 +49,7 @@ function submitGuess() {
     disableKeyboard();
     setTimeout(() => {
       wordleSettings.showModal();
+      messageIndicator(`The Worlde was "${wordle}"`);
     }, wordleLength * 600);
     return;
   }

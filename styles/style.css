@@ -138,9 +138,9 @@ body {
     }
 }
 
-.dialog__indicator__button {
+/*.dialog__indicator__button {
     color: red;
-}
+}*/
 
 .hidden {
     display: none;
