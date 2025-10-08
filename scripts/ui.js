@@ -1,60 +1,52 @@
 "use strict";
 
-function addLetterToRow(row, letter, index) {
-  row[index].textContent = letter;
+function insertLetterInRow(letter, row, letterIndex) {
+  Array.from(row.children)[letterIndex].textContent = letter;
+}
+
+function insertWordIntoRow(word, row) {
+  const positions = checkPosition(word, wordle);
+  console.log(positions);
+  for (let i = 0; i < word.length; i++) {
+    setTimeout(() => {
+      switch (positions[i]) {
+        case "correct":
+          row[i].style.backgroundColor = "green";
+          break;
+
+        case "incorrect":
+          row[i].style.backgroundColor = "salmon";
+          break;
+
+        case "none":
+          row[i].style.backgroundColor = "gray";
+          break;
+      }
+    }, i * 500);
+  }
 }
 
 function removeLetterFromRow(row, index) {
-  row[index].textContent = "";
+  row[index].innerHTML = "&nbsp;";
 }
 
-function errorRowAnimation(row) {
-  row.classList.add(`error-animation`);
-  (row.addEventListener("animationend", () => {
-    currentRowInUse.classList.remove(`error-animation`);
-  }),
-    { once: true });
-}
-
-function wordInsertionAnimation(row, input) {
-  row.forEach((item, index) =>
-    setTimeout(() => {
-      let wordInputChar = input.charAt(index);
-      if (!wordToGuess.includes(wordInputChar)) {
-        item.classList.add("unavailable");
-        removeUnavailabeKeyboardLetters(keyboard, wordInputChar);
-        return;
-      }
-      if (wordToGuess.charAt(index) == wordInputChar) {
-        item.classList.add("correct-place");
-      } else {
-        item.classList.add("wrong-place");
-      }
-    }, index * 300),
-  );
-}
-
-function removeUnavailabeKeyboardLetters(keyboardArray, char) {
-  const keyboard = Array.from(keyboardArray.children);
-  keyboard.forEach((key) => {
-    if (key.localName == "div") {
-      if (key.textContent == char) {
-        disableKeyStroke(key);
-        key.classList.add("removed-key");
-      }
+function checkPosition(input, wordle) {
+  const positionMap = [];
+  for (let i = 0; i < wordle.length; i++) {
+    if (!wordle.includes(input[i])) {
+      positionMap.push("none");
+      continue;
     }
-  });
-}
 
-function resetKeyboardUI(keyboardArray) {
-  const keyboard = Array.from(keyboardArray.children);
-  keyboard.forEach((key) => {
-    if (key.localName == "div") {
-      key.classList.remove("removed-key");
+    if (input[i] == wordle[i]) {
+      positionMap.push("correct");
+    } else {
+      positionMap.push("incorrect");
     }
-  });
+  }
+  return positionMap;
 }
 
-function hideElement(element, hide) {
-  element.classList.toggle("hidden", hide);
+function hideElement(element, visiblity = true) {
+  element.classList.toggle("hidden", visiblity);
 }

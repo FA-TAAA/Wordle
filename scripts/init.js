@@ -1,86 +1,55 @@
 "use strict";
 
-const startButton = document.querySelector(".start-button");
-const wordleGridBox = document.querySelector(".wordle-grid-box");
+const wordleGrid = document.querySelector(".wordle__grid");
 const keyboard = document.querySelector(".keyboard");
-const deleteButton = document.querySelector(".delete");
-const submitButton = document.querySelector(".submit");
-const gameSettings = document.querySelector(".game-settings");
-const keyboardKeys = setupKeyboardButtons(keyboard);
+const backspaceButton = document.querySelector(".backspace-icon");
+const enterButton = document.querySelector(".enter-icon");
+const wordleSettings = document.querySelector(".wordle__settings");
+const wordleSettingsButton = document.querySelector(
+  ".wordle__settings__button",
+);
 
-let wordInput = "";
-let rowInUseIndex = 0;
-let rowLetterIndex = -1;
-
-let category;
+let wordle;
 let wordleLength;
-let wordToGuess;
 
-let wordleGridRows;
-let currentRowInUse;
-
-startButton.addEventListener("click", setGameSettings);
-
-async function setGameSettings() {
-  category = document.querySelector("#category").value;
-  wordleLength = parseInt(document.querySelector("#wordle-length").value);
-  await assignRandomWord(category, wordleLength);
-  generateRows(wordleGridBox, wordleLength);
-  hideElement(gameSettings, true);
-  wordleGridRows = Array.from(wordleGridBox.children);
-  currentRowInUse = wordleGridRows[rowInUseIndex];
-  keyboardKeys.forEach((key) => {
-    key.addEventListener("click", setupKeyStroke);
-  });
-}
-
-function generateRows(wordleGridBox, numberOfColumns) {
-  wordleGridBox.innerHTML = "";
-  for (let i = 0; i < 5; i++) {
-    const newRow = document.createElement("div");
-    newRow.classList.add("wordle-row");
-    for (let j = 0; j < numberOfColumns; j++) {
-      const child = document.createElement("div");
-      child.classList.add("wordle-row-item");
-      newRow.style.gridTemplateColumns = `repeat(${numberOfColumns} , 1fr)`;
-      newRow.appendChild(child);
-    }
-    wordleGridBox.appendChild(newRow);
-  }
-}
-
-function setupKeyboardButtons(keyboard) {
-  const letters = [..."QWERTYUIOPASDFGHJKLZXCVBNM"];
-  const buttonLetters = [];
-  letters.forEach((letter) => {
-    const newKey = document.createElement("div");
-    newKey.textContent = letter;
-    newKey.classList.add("key");
-    if (letter === "Z") {
-      newKey.classList.add("Z-key");
-    }
-    keyboard.appendChild(newKey);
-    buttonLetters.push(newKey);
-  });
-  return buttonLetters;
-}
-
-async function generateRandomWord(url) {
+wordleSettings.showModal();
+wordleSettingsButton.addEventListener("click", async () => {
+  wordleLength = parseInt(document.querySelector("#wordle__length").value);
   try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error("Network Response Was Not OK !");
+    wordle = await generateNewWordle(wordleLength);
+    initializeGame();
+    wordleSettings.close();
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+const letters = "QWERTYUIOPASDFGHJKLZXCVBNM";
+letters.split("").forEach((letter) => {
+  const key = document.createElement("div");
+  key.textContent = letter;
+  key.classList.add("keyboard__key");
+  keyboard.appendChild(key);
+});
+
+function createWordleGrid(length) {
+  for (let i = 0; i < 5; i++) {
+    const wordleRow = document.createElement("div");
+    wordleRow.classList.add("wordle__row");
+    for (let j = 0; j < wordleLength; j++) {
+      const wordleRowItem = document.createElement("div");
+      wordleRowItem.classList.add("wordle__row__item");
+      wordleRowItem.innerHTML = "&nbsp;";
+      wordleRow.appendChild(wordleRowItem);
     }
-    const data = await response.json();
-    console.log(data[0].word);
-    return data[0].word;
-  } catch (error) {
-    console.error("There was an error in the fetch opearation : " + error);
+    wordleGrid.appendChild(wordleRow);
   }
 }
 
-async function assignRandomWord(category, length) {
-  wordToGuess = await generateRandomWord(
-    `https://random-words-api.kushcreates.com/api?category=${category}&length=${length}&type=uppercase&language=en&words=1`,
+async function generateNewWordle(length) {
+  const response = await fetch(
+    `https://random-words-api.kushcreates.com/api?length=${length}&type=uppercase&words=1`,
   );
+  const data = await response.json();
+  return data[0].word;
 }

@@ -1,246 +1,105 @@
-@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
-
-/*CSS reset*/
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&display=swap");
 
 *,
-*::before,
-*::after {
+*::after,
+*::before {
     box-sizing: border-box;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    font: inherit;
-}
-
-/*------------*/
-
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     height: 100dvh;
-    font-family: "Rubik";
-    color: white;
-    background-color: black;
-}
-
-.game-box {
     display: flex;
-    align-items: center;
     justify-content: center;
-    position: relative;
-    gap: 3rem;
-    width: 100%;
-}
-
-@media (max-width: 480px) {
-    .game-box {
-        flex-direction: column;
-        justify-content: center;
-        height: 100dvh;
-    }
-
-    .wordle-grid-box {
-        min-width: 95dvw;
-    }
-
-    .game-settings {
-        min-width: 100dvw;
-        height: 100dvh;
-    }
-
-    .wordle-row-item {
-        max-height: 80%;
-    }
-
-    .keyboard {
-        width: 100dvw;
-        position: fixed;
-        gap: 0;
-    }
-}
-
-/*-----------------------*/
-
-.game-settings {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 55dvw;
-    min-height: 55dvh;
     color: #fff;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 11;
-    backdrop-filter: blur(20px);
+    margin: 0;
+    background-color: #000;
+    font-family: "Atkinson Hyperlegible Mono";
 }
 
-.setting {
+.container {
+    display: flex;
+    justify-content: center;
+    width: 50dvw;
+    text-align: center;
+}
+
+.wordle__grid {
     display: flex;
     flex-direction: column;
-    text-align: center;
-    border: 2px solid rgba(200, 200, 200, 0.2);
-    font-size: 2rem;
-    overflow-wrap: break-word;
-    width: 50%;
-}
-
-.start-button {
-    font-weight: bold;
-    padding: 1rem 3rem;
-    font-size: 2.5rem;
-}
-
-.start-button:hover {
-    cursor: pointer;
-}
-
-/*----------------------*/
-
-.wordle-grid-box {
-    display: grid;
-    justify-content: center;
-    gap: 1rem;
-    border: 2px solid white;
-    border-radius: 4px;
-    overflow: hidden;
-    padding: 3%;
-    max-width: 50%;
-    height: 50dvh;
-}
-
-.wordle-row {
-    display: grid;
-    width: auto;
-    gap: 0.5rem;
-}
-
-.wordle-row-item {
-    display: flex;
     justify-content: center;
     align-items: center;
-    aspect-ratio: 1;
-    outline: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-    font-size: calc(1rem + 1vw);
+    gap: 1em;
+    padding: 1em;
+    font-weight: 500;
 }
 
-/*----------*/
-
-.wrong-place {
-    transition: background-color 1s linear;
-    background-color: sandybrown;
-    border: none;
+.wordle__row {
+    display: flex;
+    gap: 1em;
 }
 
-.correct-place {
-    transition: background-color 1s linear;
-    background-color: green;
-    border: none;
-}
-
-.unavailable {
-    transition: background-color 1s linear;
-    background-color: dimgray;
-    border: none;
+.wordle__row__item {
+    border: 1px solid slategray;
+    display: inline;
+    font-size: 2.5rem;
+    padding: 0 0.5em;
 }
 
 .keyboard {
-    position: relative;
     display: grid;
-    gap: 2px;
+    align-content: center;
     grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    align-items: center;
+    font-size: 1.3rem;
+    padding: 0 0.5em;
+    gap: 0.2em;
 }
 
-.Z-key {
-    grid-row: 3;
-    grid-column: 1;
+.keyboard__key {
+    cursor: pointer;
+    padding: 0.5em;
+    border: 1px solid lightslategray;
+    transition: background 0.1s ease-in-out;
 }
 
-.key {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 2px;
-    border: 2px solid white;
-    font-size: 1rem;
-    height: 3rem;
-    width: 2rem;
+.keyboard__key:hover {
+    background: slategrey;
+}
+
+.keyboard__key:nth-child(22) {
+    grid-row: 3/4;
+    grid-column: 1/2;
+}
+
+.enter-icon,
+.backspace-icon {
+    align-self: center;
+    stroke: white;
+    stroke-width: 1;
     cursor: pointer;
 }
 
-.key:hover,
-.icon:hover {
-    font-weight: bold;
-    opacity: 0.8;
-}
-
-.key:active,
-.icon:active {
-    transform: scale(0.9);
-}
-
-.icon {
-    order: 2;
-    cursor: pointer;
-}
-
-.hidden {
-    display: none;
-}
-
-.not-included {
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    cursor: not-allowed;
+.enter-icon:hover,
+.backspace-icon:hover {
     opacity: 0.7;
 }
 
-@keyframes errorRowAnimation {
-    0% {
-        background-color: rgba(255, 0, 0, 0.2);
-    }
-    100% {
-        background-color: black;
-    }
+.enter-icon {
+    grid-area: 3/10/4/11;
 }
 
-@keyframes winRowAniamtion {
-    0% {
-        background-color: rgba(0, 200, 0, 0.2);
-    }
-    100% {
-        background-color: black;
-    }
+.backspace-icon {
+    grid-area: 3/9/4/10;
 }
 
-@keyframes submitRowAniamtion {
-    0% {
-        background-color: rgba(0, 0, 0, 0.2);
-    }
-    100% {
-        background-color: black;
-    }
+.wordle__settings {
+    backdrop-filter: blur(10px);
+    color: white;
+    background: none;
+    width: 30%;
 }
-
-.error-animation {
-    animation: errorRowAnimation 1s linear;
-}
-
-.submit-animation {
-    animation: submitRowAnimation 1s linear;
-}
-
-.removed-key {
-    border: 1px solid grey;
-    opacity: 0.5;
-    cursor: not-allowed;
+.wordle__settings::backdrop {
+    backdrop-filter: blur(2px);
 }
 
 .hidden {

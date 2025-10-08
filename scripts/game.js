@@ -1,65 +1,67 @@
 "use strict";
 
-function setupKeyStroke(key) {
-  if (wordInput.length < 5) {
-    wordInput += key.target.textContent;
-    rowLetterIndex++;
-    addLetterToRow(
-      Array.from(currentRowInUse.children),
-      key.target.textContent,
-      rowLetterIndex,
-    );
-  } else {
-    errorRowAnimation(currentRowInUse);
-    console.log("Word is too long");
-  }
+let wordInput = "";
+let currentWordleRowIndex = 0;
+let currentRowLetterIndex = 0;
+
+let currentWordleRow;
+
+function initializeGame() {
+  createWordleGrid(wordleLength);
+  currentWordleRow = wordleGrid.children[currentWordleRowIndex];
+  enterButton.addEventListener("click", submitGuess);
+  backspaceButton.addEventListener("click", cancelLetter);
+  Array.from(keyboard.children).forEach((key) => {
+    if (key.className == "keyboard__key") {
+      key.addEventListener("click", activateKeystroke);
+    }
+  });
 }
 
-submitButton.addEventListener("click", () => {
-  if (wordInput.length != 5) {
-    errorRowAnimation(currentRowInUse);
-    return;
+function activateKeystroke() {
+  if (wordInput.length >= 5) return;
+  if (currentWordleRowIndex >= 5) return;
+  wordInput = wordInput + this.textContent;
+  insertLetterInRow(this.textContent, currentWordleRow, currentRowLetterIndex);
+  currentRowLetterIndex++;
+  console.log(wordInput);
+}
+
+function submitGuess() {
+  if (wordInput.length < 5) return;
+  if (currentWordleRowIndex >= 5) return;
+  if (wordle === wordInput) {
+    disableKeyboard();
   }
-
-  if (rowInUseIndex > 4) {
-    disableKeyboard(keyboardKeys);
-    return;
-  }
-
-  wordInsertionAnimation(Array.from(currentRowInUse.children), wordInput);
-
-  if (wordInput === wordToGuess) {
-    disableKeyboard(keyboardKeys);
-    setTimeout(() => {
-      hideElement(gameSettings, false);
-      resetKeyboardUI(keyboard);
-      wordInput = "";
-      rowInUseIndex = 0;
-      rowLetterIndex = -1;
-    }, 3000);
-    return;
-  }
-
-  rowInUseIndex++;
-  rowLetterIndex = -1;
+  insertWordIntoRow(wordInput, Array.from(currentWordleRow.children));
+  currentWordleRow = wordleGrid.children[++currentWordleRowIndex];
   wordInput = "";
-  currentRowInUse = wordleGridRows[rowInUseIndex];
-});
+  currentRowLetterIndex = 0;
 
-deleteButton.addEventListener("click", () => {
-  if (rowLetterIndex >= 0) {
-    removeLetterFromRow(Array.from(currentRowInUse.children), rowLetterIndex);
-    wordInput = wordInput.slice(0, -1);
-    rowLetterIndex--;
+  if (wordle === wordInput) {
+    setTimeout(() => {});
   }
-});
-
-function disableKeyStroke(key) {
-  key.removeEventListener("click", setupKeyStroke);
 }
 
-function disableKeyboard(keys) {
-  keys.forEach((key) => {
-    disableKeyStroke(key);
+function cancelLetter() {
+  if (currentRowLetterIndex <= 0) return;
+  --currentRowLetterIndex;
+  removeLetterFromRow(
+    Array.from(currentWordleRow.children),
+    currentRowLetterIndex,
+  );
+  wordInput = wordInput.slice(0, -1);
+  console.log(wordInput);
+}
+
+function disableKeyboard() {
+  Array.from(keyboard.children).forEach((key) => {
+    if (key.className == "keyboard__key")
+      key.removeEventListener("click", activateKeystroke);
+    else if ("enter-icon") {
+      enterButton.removeEventListener("click", submitGuess);
+    } else if ("backspace-icon") {
+      backspaceButton.removeEventListener("click", cancelLetter);
+    }
   });
 }
