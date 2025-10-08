@@ -66,11 +66,6 @@ body {
     background: slategrey;
 }
 
-.keyboard__key:nth-child(22) {
-    grid-row: 3/4;
-    grid-column: 1/2;
-}
-
 .enter-icon,
 .backspace-icon {
     align-self: center;
@@ -89,17 +84,52 @@ body {
 }
 
 .backspace-icon {
-    grid-area: 3/9/4/10;
+    grid-area: 2/10/3/11;
 }
 
-.wordle__settings {
+.wordle__modal {
     backdrop-filter: blur(10px);
     color: white;
     background: none;
     width: 30%;
 }
-.wordle__settings::backdrop {
+.wordle__modal::backdrop {
     backdrop-filter: blur(2px);
+}
+
+.empty {
+    animation-name: empty__row__zoom;
+    animation-duration: 2s;
+}
+@keyframes empty__row__zoom {
+    0% {
+    }
+    50% {
+        transform: scale(1.1);
+        background-color: rgba(255, 0, 0, 0.4);
+    }
+    100% {
+    }
+}
+
+.win {
+    animation-fill-mode: forwards;
+    animation: win__row__zoom;
+    animation-duration: 2s;
+}
+@keyframes win__row__zoom {
+    0% {
+    }
+    70% {
+        transform: scale(1.1);
+        background-color: rgb(154, 239, 255, 0.7);
+    }
+    100% {
+    }
+}
+
+.dialog__indicator__button {
+    color: red;
 }
 
 .hidden {

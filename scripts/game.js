@@ -1,14 +1,16 @@
 "use strict";
 
-let wordInput = "";
-let currentWordleRowIndex = 0;
-let currentRowLetterIndex = 0;
-
-let currentWordleRow;
+let wordInput;
+let currentRowInUse;
+let currentRowIndex;
+let currentRowLetterIndex;
 
 function initializeGame() {
+  wordInput = "";
+  currentRowIndex = 0;
+  currentRowLetterIndex = 0;
   createWordleGrid(wordleLength);
-  currentWordleRow = wordleGrid.children[currentWordleRowIndex];
+  currentRowInUse = wordleGrid.children[currentRowIndex];
   enterButton.addEventListener("click", submitGuess);
   backspaceButton.addEventListener("click", cancelLetter);
   Array.from(keyboard.children).forEach((key) => {
@@ -19,27 +21,36 @@ function initializeGame() {
 }
 
 function activateKeystroke() {
-  if (wordInput.length >= 5) return;
-  if (currentWordleRowIndex >= 5) return;
+  if (wordInput.length >= wordleLength) return;
+  if (currentRowIndex >= 5) return;
   wordInput = wordInput + this.textContent;
-  insertLetterInRow(this.textContent, currentWordleRow, currentRowLetterIndex);
+  insertLetterInRow(this.textContent, currentRowInUse, currentRowLetterIndex);
   currentRowLetterIndex++;
-  console.log(wordInput);
 }
 
 function submitGuess() {
-  if (wordInput.length < 5) return;
-  if (currentWordleRowIndex >= 5) return;
-  if (wordle === wordInput) {
-    disableKeyboard();
+  if (wordInput.length < wordleLength) {
+    incompleteRow(currentRowInUse);
+    return;
   }
-  insertWordIntoRow(wordInput, Array.from(currentWordleRow.children));
-  currentWordleRow = wordleGrid.children[++currentWordleRowIndex];
+  insertWordIntoRow(wordInput, Array.from(currentRowInUse.children));
+
+  if (wordle === wordInput || currentRowIndex >= 5) {
+    disableKeyboard();
+    setTimeout(() => {
+      winningAnimation(currentRowInUse);
+    }, wordleLength * 600);
+    return;
+  }
+  currentRowInUse = wordleGrid.children[++currentRowIndex];
   wordInput = "";
   currentRowLetterIndex = 0;
-
-  if (wordle === wordInput) {
-    setTimeout(() => {});
+  if (currentRowIndex >= 5) {
+    disableKeyboard();
+    setTimeout(() => {
+      wordleSettings.showModal();
+    }, wordleLength * 600);
+    return;
   }
 }
 
@@ -47,11 +58,10 @@ function cancelLetter() {
   if (currentRowLetterIndex <= 0) return;
   --currentRowLetterIndex;
   removeLetterFromRow(
-    Array.from(currentWordleRow.children),
+    Array.from(currentRowInUse.children),
     currentRowLetterIndex,
   );
   wordInput = wordInput.slice(0, -1);
-  console.log(wordInput);
 }
 
 function disableKeyboard() {
@@ -64,4 +74,21 @@ function disableKeyboard() {
       backspaceButton.removeEventListener("click", cancelLetter);
     }
   });
+}
+
+function checkPosition(input, wordle) {
+  const positionMap = [];
+  for (let i = 0; i < wordle.length; i++) {
+    if (!wordle.includes(input[i])) {
+      positionMap.push("none");
+      continue;
+    }
+
+    if (input[i] == wordle[i]) {
+      positionMap.push("correct");
+    } else {
+      positionMap.push("incorrect");
+    }
+  }
+  return positionMap;
 }

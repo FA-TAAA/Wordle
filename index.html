@@ -7,12 +7,18 @@
         <title>Wordle</title>
     </head>
     <body>
-        <dialog class="wordle__settings">
+        <dialog class="wordle__modal">
             <div>
                 <label for="worlde__length">Wordle's Length</label>
-                <input type="number" id="wordle__length" name="wordle__lenth" />
+                <input
+                    type="number"
+                    id="wordle__length"
+                    name="wordle__lenth"
+                    value="5"
+                />
             </div>
-            <button class="wordle__settings__button">Click me</button>
+            <p class="dialog__indicator__button"></p>
+            <button class="wordle__modal__button">Play</button>
         </dialog>
         <div class="container">
             <div class="wordle__grid"></div>

@@ -1,12 +1,26 @@
 "use strict";
 
+function createWordleGrid(length) {
+  wordleGrid.innerHTML = "";
+  for (let i = 0; i < 5; i++) {
+    const wordleRow = document.createElement("div");
+    wordleRow.classList.add("wordle__row");
+    for (let j = 0; j < wordleLength; j++) {
+      const wordleRowItem = document.createElement("div");
+      wordleRowItem.classList.add("wordle__row__item");
+      wordleRowItem.innerHTML = "&nbsp;";
+      wordleRow.appendChild(wordleRowItem);
+    }
+    wordleGrid.appendChild(wordleRow);
+  }
+}
+
 function insertLetterInRow(letter, row, letterIndex) {
   Array.from(row.children)[letterIndex].textContent = letter;
 }
 
 function insertWordIntoRow(word, row) {
   const positions = checkPosition(word, wordle);
-  console.log(positions);
   for (let i = 0; i < word.length; i++) {
     setTimeout(() => {
       switch (positions[i]) {
@@ -30,23 +44,24 @@ function removeLetterFromRow(row, index) {
   row[index].innerHTML = "&nbsp;";
 }
 
-function checkPosition(input, wordle) {
-  const positionMap = [];
-  for (let i = 0; i < wordle.length; i++) {
-    if (!wordle.includes(input[i])) {
-      positionMap.push("none");
-      continue;
-    }
-
-    if (input[i] == wordle[i]) {
-      positionMap.push("correct");
-    } else {
-      positionMap.push("incorrect");
-    }
-  }
-  return positionMap;
+function incompleteRow(row) {
+  row.classList.add("empty");
+  row.addEventListener("animationend", () => {
+    row.classList.remove("empty");
+  });
 }
 
-function hideElement(element, visiblity = true) {
-  element.classList.toggle("hidden", visiblity);
+function winningAnimation(row) {
+  row.classList.add("win");
+  row.addEventListener("animationend", () => {
+    row.classList.remove("win");
+    wordleSettings.showModal();
+  });
+}
+
+function messageIndicator(type = "game", message) {
+  dialogIndicator.textContent = message;
+  setTimeout(() => {
+    dialogIndicator.textContent = " ";
+  }, 5000);
 }
