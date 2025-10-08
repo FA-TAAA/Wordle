@@ -25,6 +25,7 @@ wordleSettingsButton.addEventListener("click", async () => {
     wordle = await generateNewWordle(wordleLength);
     initializeGame();
     wordleSettings.close();
+    console.log("here");
   } catch (err) {
     console.log(err);
   }

@@ -98,7 +98,6 @@ body {
 }
 
 .wordle__modal {
-    display: flex;
     font-size: 2rem;
     flex-direction: column;
     align-items: center;
@@ -108,6 +107,7 @@ body {
     color: white;
     background: none;
 }
+
 .wordle__modal::backdrop {
     backdrop-filter: blur(2px);
 }
